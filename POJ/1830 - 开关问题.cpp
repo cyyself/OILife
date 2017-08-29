@@ -20,7 +20,7 @@ int gauss() {
 			continue;
 		}
 		if (k != id) for (int j=i;j<=n+1;j++) swap(a[id][j],a[k][j]);
-		for (int j=id+1;j<=n;j++) if (a[j][i]) {
+		for (int j=1;j<=n;j++) if (j != id && a[j][i]) {
 			for (int k=i;k<=n+1;k++) a[j][k] ^= a[id][k];
 		}
 	}
