@@ -7,27 +7,26 @@ int a[35][35];
 int n;
 int gauss() {
 	int free = 0;
-	for (int i=1;i<=n;i++) {
-		int k = i;
-		for (int j=i+1;j<=n;j++) if (a[j][i]) k = j;
-		int now = a[k][i];
-		if (now == 0) free++;
-		if (k != i) for (int j=i;j<=n+1;j++) swap(a[i][j],a[k][j]);
-		for (int j=0;j<=n;j++) if (j != i && a[j][i]){
-			for (int k=i;k<=n+1;k++) a[j][k] ^= a[i][k];
-		}
-	}
-	for (int i=1;i<=n;i++) {
-		bool exist = false;
-		for (int j=1;j<=n;j++) if (a[i][j]) {
-			exist = true;
+	int id,i;
+	for (id=i=1;i<=n;i++,id++) {
+		int k = id;
+		for (int j=id+1;j<=n;j++) if (a[j][i]) {
+			k = j;
 			break;
 		}
-		if (!exist && a[i][n+1]) return -1;
+		if (a[k][i] == 0) {
+			free ++;
+			id--;
+			continue;
+		}
+		if (k != id) for (int j=i;j<=n+1;j++) swap(a[id][j],a[k][j]);
+		for (int j=id+1;j<=n;j++) if (a[j][i]) {
+			for (int k=i;k<=n+1;k++) a[j][k] ^= a[id][k];
+		}
 	}
+	for (int i=id;i<=n;i++) if (a[i][n+1]) return -1;
 	return free;
 }
-
 int main() {
 	int T;
 	scanf("%d",&T);
