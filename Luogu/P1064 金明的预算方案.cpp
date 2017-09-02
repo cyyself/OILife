@@ -1,39 +1,40 @@
-#include <iostream>
-#include <vector>
-#include <cstring>
-using namespace std;
-struct Obj {
-	int v,p;
-	Obj (int _v,int _p):v(_v),p(_p){}
-	Obj ():v(0),p(0){}//对于附件直接定义默认值为-1
-};
-vector <Obj> Link[65];
-Obj M[64][3];
-int f[32005];
-int attach[65] = {0};
+#include <bits/stdc++.h>
+using std::max;
+int head[65];
+struct Edge {
+	int v,w;//w是权值，相当于输入数据的p*v
+	int p;//价格，相当于输入数据的v
+	int next;
+}e[65];
+int ecnt = 0;
+int f[65][32005];
+int n,m;
+void AddEdge(int u,int v,int w,int p) {
+	e[ecnt].next = head[u];
+	head[u] = ecnt;
+	e[ecnt].v = v;
+	e[ecnt].w = w;
+	e[ecnt].p = p;
+	ecnt ++;
+}
+void dfs(int cur,int maxp) {//p是当前物品的价格,w是价值(价格*重要度)
+	for (int i=head[cur];i != -1;i = e[i].next) {
+		if (maxp <= e[i].p) continue;
+		for (int j=0;j<=maxp-e[i].p;j++) f[e[i].v][j] = f[cur][j] + e[i].w;
+		dfs(e[i].v,maxp-e[i].p);
+		for (int j=maxp;j>=e[i].p;j--)
+			f[cur][j] = max(f[cur][j],f[e[i].v][j-e[i].p]);
+	}
+}
 int main() {
-	int N,m;
-	cin >> N >> m;
+	memset(head,-1,sizeof(head));
+	scanf("%d%d",&n,&m);
 	for (int i=1;i<=m;i++) {
 		int v,p,q;
-		cin >> v >> p >> q;
-		if (q == 0) {
-			M[i][0] = Obj(v,p);
-		}//不赋值的时候默认值为-1
-		else {
-			attach[q]++;
-			M[q][attach[q]] = Obj(v,p);
-		}
+		scanf("%d%d%d",&v,&p,&q);
+		AddEdge(q,i,v*p,v);
 	}
-	for (int i=1;i<=m;i++) {
-		if (M[i][0].v == 0) continue;
-		for (int j=N;j>=M[i][0].v;j--) {//先来处理主件
-			f[j] = max(f[j],f[j-M[i][0].v] + M[i][0].v * M[i][0].p);
-			if (j >= M[i][0].v + M[i][1].v) f[j] = max(f[j],f[j-M[i][0].v-M[i][1].v] + M[i][0].v * M[i][0].p + M[i][1].v * M[i][1].p);
-			if (j >= M[i][0].v + M[i][2].v) f[j] = max(f[j],f[j-M[i][0].v-M[i][2].v] + M[i][0].v * M[i][0].p + M[i][2].v * M[i][2].p);
-			if (j >= M[i][0].v + M[i][1].v + M[i][2].v) f[j] = max(f[j],f[j-M[i][0].v-M[i][1].v-M[i][2].v] + M[i][0].v * M[i][0].p + M[i][1].v * M[i][1].p + M[i][2].v * M[i][2].p);
-		}
-	}
-	cout << f[N] << endl;
+	dfs(0,n);
+	printf("%d\n",f[0][n]);
 	return 0;
 }
