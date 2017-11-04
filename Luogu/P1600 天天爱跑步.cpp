@@ -83,8 +83,8 @@ void dfs(int u) {
 	}
 	tong[dep[u]] += scnt[u];
 	if (now <= maxdep) ans[u] += tong[now] - tmp;
-	for (int i=len1[u].size()-1;i>=0;i--) {
-		tong[len1[u][i]] --;
+	for (vector<int>::iterator i=len1[u].begin();i != len1[u].end();i++) {
+		tong[*i] --;
 	}
 }
 void dfs2(int u) {
@@ -94,12 +94,12 @@ void dfs2(int u) {
 		int v = e[i].v;
 		if (dep[u] < dep[v]) dfs2(v);
 	}
-	for (int i=len2[u].size()-1;i>=0;i--) {
-		tong[len2[u][i]+300000] ++;
+	for (vector<int>::iterator i=len2[u].begin();i != len2[u].end();i++) {
+		tong[*i+300000] ++;
 	}
 	ans[u] += tong[now] - pre;
-	for (int i=len3[u].size()-1;i>=0;i--) {
-		tong[len3[u][i]+300000] --;
+	for (vector<int>::iterator i=len3[u].begin();i != len3[u].end();i++) {
+		tong[*i+300000] --;
 	}
 }
 int main() {
