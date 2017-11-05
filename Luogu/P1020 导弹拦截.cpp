@@ -2,7 +2,7 @@
 using namespace std;
 int n;
 struct specialnum {
-	//用于upper_bound，因为lower_bound可以等于，而我们第一个问题要求小于，所以重载一下运算符改变符号
+	//用于upper_bound，因为lower_bound可以等于，而我们第一个问题要求小于，所以重载一下运算符改变符号，配合upper_bound变成一个不能等于的lower_bound
 	int x;
 	friend bool operator < (const specialnum &a,const specialnum &b) {
 		return a.x > b.x;
