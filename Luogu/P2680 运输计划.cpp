@@ -81,7 +81,7 @@ inline bool judge(int maxcost) {
 	cnt = 0;
 	maxw = 0;
 	for (i=0;i<m;i++) if (t[i].len > maxcost) break;
-	if (i == m-1 && t[m-1].len <= maxcost) return true;//不需要改造
+	if (i == m && t[m-1].len <= maxcost) return true;//不需要改造
 	//改造是否达标
 	for (i;i<m;i++) {
 		pass[t[i].u] ++;
