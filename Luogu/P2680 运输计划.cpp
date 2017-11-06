@@ -90,7 +90,7 @@ inline bool judge(int maxcost) {
 		cnt ++;
 	}
 	dfs(1);
-	if (t[m-1].len > maxcost + maxw) return false;//改造了也不够
+	if (maxw==0||t[m-1].len > maxcost + maxw) return false;//改造了也不够
 	return 1;
 }
 int main() {
