@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
+
 struct Tr{
 	Tr *ch[26];//child
 	int cnt;
@@ -9,8 +10,7 @@ struct Tr{
 		cnt = 0;
 		last = 0;
 	}
-};
-int curinsert;
+}root;
 inline void insert(char *s,Tr *node) {
 	if (*s == '\0') {
 		node->cnt ++;
@@ -20,16 +20,16 @@ inline void insert(char *s,Tr *node) {
 		insert(s+1,node->ch[*s-'a']);
 	}
 }
-int curquery;
-int ans = 0;
-inline void query(char *s,Tr *node) {
+inline int query(char *s,Tr *node,int curquery) {
+	int ret = 0;
 	if (node->last != curquery) {
-		ans += node->cnt;
+		ret += node->cnt;
 		node->last = curquery;
 	}
-	if (*s != '\0' && node->ch[*s-'a'] != NULL) query(s+1,node->ch[*s-'a']);
+	if (*s != '\0' && node->ch[*s-'a'] != NULL) ret += query(s+1,node->ch[*s-'a'],curquery);
+	return ret;
 }
-Tr root;
+
 char s[20005][15];
 int n;
 
@@ -37,16 +37,15 @@ int main() {
 	scanf("%d",&n);
 	for (int i=1;i<=n;i++) {
 		scanf("%s",s[i]);
-		curinsert = i;
 		insert(s[i],&root);
 	}
+	int ans = 0;
 	for (int i=1;i<=n;i++) {
-		curquery = i;
 		int len = strlen(s[i]);
 		for (int j=0;j<=len-1;j++) {
-			query(&s[i][j],&root);
+			ans += query(&s[i][j],&root,i);
 		}
-		ans --;
+		ans --;//除去匹配了自己的情况
 	}
 	printf("%d\n",ans);
 	return 0;
