@@ -5,7 +5,6 @@ struct grape {
 	double val[6];
 	int no;
 }g[65];
-double dis[65][65];
 int main() {
 	scanf("%d",&n);
 	for (int i=0;i<n;i++) {
@@ -22,7 +21,6 @@ int main() {
 			for (int k=0;k<6;k++) {
 				dist += pow(g[i].val[k]-g[j].val[k],2);
 			}
-			dis[i][j] = sqrt(dist);
 			tmp += sqrt(dist);
 		}
 		if (tmp > ansv) {
