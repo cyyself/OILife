@@ -4,7 +4,7 @@ const int INF = 0x3f3f3f3f;
 struct edge {
     int v,w;
 };
-vector <edge> g[12];
+vector <edge> g[15];
 int n,m;
 int ans = INF;
 bool vis[15];
