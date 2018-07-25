@@ -1,3 +1,4 @@
+//要处理入度为0的地方和有环的地方
 #include <bits/stdc++.h>
 using namespace std;
 int ind[10005];
@@ -38,7 +39,7 @@ int main() {
 			cnt++;
 			dfs(i);
 		}
-		for (int i=1;i<=n;i++) {
+		for (int i=1;i<=n;i++) {//处理环的任意一点
 			if (stat[i]) {
 				dfs(i);
 				cnt++;
