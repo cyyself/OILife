@@ -1,61 +1,39 @@
-#include <cstdio>
-#include <algorithm>
+//保证字典序最小只要从后往前推状态就行了
+//垃圾题目，2年前写过今天再写调了一小时
+#include <bits/stdc++.h>
 using namespace std;
+int mt[15][105];
+int pre[15][105];
+int n,m;
+const int dx[] = {-1,0,1};
 int main() {
-	int m,n;
-	while(scanf("%d%d",&m,&n) == 2) {
-		int matrix[15][105];
-		for (int i=0;i<m;i++) for (int j=0;j<n;j++) scanf("%d",&matrix[i][j]);
-		int last[15][105];
-		for (int i=n-2;i>=0;i--) for (int j=0;j<m;j++) {
-			int pos = 0;
-			int v = 0x7fffffff;
-			if (j == 0) {
-				const int seq[] = {0,1,-1};
+	while (scanf("%d%d",&n,&m) == 2) {
+		memset(pre,-1,sizeof(pre));
+		for (int i=0;i<n;i++)
+			for (int j=0;j<m;j++) scanf("%d",&mt[i][j]);
+		for (int y=m-2;y>=0;y--)
+			for (int x=0;x<n;x++) {
+				int delta = 0x7fffffff;
 				for (int k=0;k<3;k++) {
-					int curpos = (j + seq[k] + m) % m;
-					if (matrix[curpos][i+1] < v) {
-						pos = curpos;
-						v = matrix[curpos][i+1];
+					if (mt[(x+dx[k]+n)%n][y+1] < delta || (mt[(x+dx[k]+n)%n][y+1] == delta && ((x+dx[k]+n)%n) < pre[x][y]) ) {
+						delta = mt[(x+dx[k]+n)%n][y+1];
+						pre[x][y] = (x+dx[k]+n)%n;
 					}
 				}
+				mt[x][y] += delta;
 			}
-			else if (j == m-1) {
-				const int seq[] = {1,-1,0};
-				for (int k=0;k<3;k++) {
-					int curpos = (j + seq[k] + m) % m;
-					if (matrix[curpos][i+1] < v) {
-						pos = curpos;
-						v = matrix[curpos][i+1];
-					}
-				}
-			}
-			else {
-				const int seq[] = {-1,0,1};
-				for (int k=0;k<3;k++) {
-					int curpos = (j + seq[k] + m) % m;
-					if (matrix[curpos][i+1] < v) {
-						pos = curpos;
-						v = matrix[curpos][i+1];
-					}
-				}
-			}
-			last[j][i] = pos;
-			matrix[j][i] += v;
-		}
 		int ans = 0x7fffffff;
-		int anspos = 0;
-		for (int i=0;i<m;i++) {
-			if (matrix[i][0] < ans) {
-				ans = matrix[i][0];
-				anspos = i;
+		int ans_pos = -1;
+		for (int x=0;x<n;x++) {
+			if (mt[x][0] < ans) {
+				ans = mt[x][0];
+				ans_pos = x;
 			}
 		}
-		printf("%d",anspos+1);
-		int next = last[anspos][0];
-		for (int i=1;i<n;i++) {
-			printf(" %d",next+1);
-			next = last[next][i];
+		printf("%d",ans_pos+1);
+		for (int y=0;y<=m-2;y++) {
+			ans_pos = pre[ans_pos][y];
+			printf(" %d",ans_pos+1);
 		}
 		printf("\n%d\n",ans);
 	}
