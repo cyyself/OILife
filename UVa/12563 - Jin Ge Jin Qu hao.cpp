@@ -1,30 +1,31 @@
-#include <cstdio>
-#include <algorithm>
+#include <bits/stdc++.h>
 using namespace std;
+int ti[55];
+int f[10005];//记录唱歌数量，虽然T很大，但是n只有到50(为啥我2年后再写一遍这道题没想到这个)
+int g[10005];//记录唱歌时间
 int main() {
 	int T;
 	scanf("%d",&T);
 	for (int c=1;c<=T;c++) {
-		printf("Case %d:",c);
+		memset(f,0,sizeof(f));
+		memset(g,0,sizeof(g));
+		printf("Case %d: ",c);
 		int n,t;
 		scanf("%d%d",&n,&t);
-		int s[55];
-		int nt = 0;
+		int sum = 0;
 		for (int i=0;i<n;i++) {
-			scanf("%d",&s[i]);
-			nt += s[i];
+			scanf("%d",&ti[i]);
+			sum += ti[i];
 		}
-		nt ++;//nt多加一秒，因为背包不能完全装满
-		t = min(nt,t);//因为t最大值达到了10^9，而歌曲最多50首，每首最多180秒，最多不过9000秒，因此我们为了防止开太大数组爆内存这样做即可
-		int f[10005] = {0};//存储最大歌曲数
-		int f2[10005] = {0};//存储最长唱歌时间
-		for (int i=0;i<n;i++) for (int j=t-1;j>=s[i];j--) {
-			if (f[j-s[i]] + 1 > f[j] || (f[j-s[i]] + 1 == f[j] && f2[j-s[i]] + s[i] >= f2[j]) ) {
-				f[j] = f[j-s[i]] + 1;
-				f2[j] = f2[j-s[i]] + s[i];
+		int t_max = min(t-1,sum);
+		for (int i=0;i<n;i++)
+			for (int j=t_max;j>=ti[i];j--) {
+				if (f[j-ti[i]] + 1 > f[j] || (f[j-ti[i]] + 1 == f[j] && g[j-ti[i]] + ti[i] > g[j])) {
+					f[j] = f[j-ti[i]]+1;
+					g[j] = g[j-ti[i]] + ti[i];
+				}
 			}
-		}
-		printf(" %d %d\n",f[t-1]+1,f2[t-1]+678);
+		printf("%d %d\n",f[t_max]+1,g[t_max]+678);
 	}
 	return 0;
 }
