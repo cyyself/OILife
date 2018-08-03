@@ -11,7 +11,7 @@ int main() {
 		len = strlen(s);
 		memset(f,0,sizeof(f));
 		for (int i=1;i<=len;i++) f[i][i] = 1;//自己到自己的长度为1
-		for (int d=1;d<=len;d++) {
+		for (int d=2;d<=len;d++) {
 			for (int i=1;i+d-1<=len;i++) {
 				int j = i + d - 1;
 				f[i][j] = max(f[i][j],f[i][j-1]);//多扩展一个可能不如不扩展
