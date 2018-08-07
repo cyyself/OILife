@@ -32,8 +32,10 @@ inline int read() {
 
 bool inq[200005];
 int dis[200005];
+int cnt[200005];
 inline bool spfa(int s) {
 	queue <int> q;
+	memset(cnt,0,sizeof(cnt));
 	memset(inq,false,sizeof(inq));
 	memset(dis,0x3f,sizeof(dis));
 	dis[s] = 0;
@@ -41,11 +43,12 @@ inline bool spfa(int s) {
 	while (!q.empty()) {
 		int cur = q.front();
 		q.pop();
+		cnt[cur] ++;
 		inq[cur] = false;
+		if (cnt[cur] >= n) return false;
 		for (int i=head[cur];i != -1;i = e[i].next) {
 			int v = e[i].v;
 			if (dis[cur] + e[i].w < dis[v]) {
-				if (v == s) return false;
 				dis[v] = dis[cur] + e[i].w;
 				if (!inq[v]) {
 					q.push(v);
