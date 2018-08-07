@@ -45,7 +45,7 @@ inline bool spfa(int s) {
 		q.pop();
 		cnt[cur] ++;
 		inq[cur] = false;
-		if (cnt[cur] >= n) return false;
+		if (cnt[cur] > n) return false;
 		for (int i=head[cur];i != -1;i = e[i].next) {
 			int v = e[i].v;
 			if (dis[cur] + e[i].w < dis[v]) {
