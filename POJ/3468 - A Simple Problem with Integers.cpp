@@ -33,19 +33,21 @@ void build_tree(int node,int l,int r) {
 long long sum(int node,int l,int r,int L,int R) {//小写的l和r是当前节点区间，大写的L和R是要操作的区间
 	if (l == L && r == R) return tr[node].sum;
 	else {
+		if (tr[node].lazy) push_down(node,l,r);
 		int mid = (l + r) >> 1;
-		if (R <= mid) return (R - L + 1LL) * tr[node].lazy + sum(node<<1,l,mid,L,R);
-		if (L >= mid + 1) return (R - L + 1LL) * tr[node].lazy + sum(node<<1|1,mid+1,r,L,R);
-		return (R - L + 1LL) * tr[node].lazy + sum(node<<1,l,mid,L,mid) + sum(node<<1|1,mid+1,r,mid+1,R);
+		if (R <= mid) return sum(node<<1,l,mid,L,R);
+		if (L >= mid + 1) return sum(node<<1|1,mid+1,r,L,R);
+		return sum(node<<1,l,mid,L,mid) + sum(node<<1|1,mid+1,r,mid+1,R);
 	}
 }
 void add(int node,int l,int r,int L,int R,int d) {
-	tr[node].sum += (R - L + 1) * d;
 	if (l == L && r == R) {
+		tr[node].sum += (R - L + 1) * d;
 		tr[node].lazy += d;
 	}
 	else {
 		int mid = (l + r) >> 1;
+		if (tr[node].lazy) push_down(node,l,r);
 		if (R <= mid) {
 			add(node<<1,l,mid,L,R,d);
 		}
@@ -56,6 +58,7 @@ void add(int node,int l,int r,int L,int R,int d) {
 			add(node<<1,l,mid,L,mid,d);
 			add(node<<1|1,mid+1,r,mid+1,R,d);
 		}
+		push_up(node);
 	}
 }
 long long read() {
