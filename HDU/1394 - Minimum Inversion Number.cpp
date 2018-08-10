@@ -21,13 +21,11 @@ inline long long sum(int x) {
 inline void add(int x,int d) {
 	for (int i=x;i<=n;i+=lowbit(i)) tr[i] += d;
 }
-int raw[5005];
 int main() {
 	while (scanf("%d",&n) == 1) {
 		memset(tr,0,sizeof(tr));
 		for (int i=1;i<=n;i++) {
 			scanf("%d",&d[i].v);
-			raw[i] = d[i].v;
 			d[i].pos = i;
 		}
 		sort(d+1,d+1+n);
@@ -43,7 +41,7 @@ int main() {
 		}
 		long long ans = cnt;
 		for (int i=1;i<=n;i++) {
-			cnt = cnt - raw[i] + n - 1 - raw[i];
+			cnt = cnt - 2*(r[i]-1) + n - 1;//rank从1开始，所以-1
 			ans = min(ans,cnt);
 		}
 		printf("%lld\n",ans);
