@@ -5,12 +5,17 @@
 参考资料：https://blog.csdn.net/lyy289065406/article/details/6689310
 
 资料里的样例：
+
+输入：
 6 5
 1 2 1 10 10
 2 3 4 10 100
 2 4 2 15 15
 4 1 1 12 12
 3 6 6 10 10
+
+输出：
+67
 */
 #include <cstdio>
 #include <cstring>
