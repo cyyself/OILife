@@ -1,76 +1,83 @@
 #include <cstdio>
 #include <cstring>
+#include <algorithm>
 #include <queue>
-#define INF 0x7f7f7f7f
 using namespace std;
-struct Edge{
-	int f,v,next;
-}e[405];
-int ecnt = 0;//因为采用了一个邻接表奇偶存两条边的方法，所以必须从偶数开始
+const int INF = 0x3f3f3f3f;
+struct edge {
+	int u,v,f,c;
+	int next;
+}e[805];
 int head[205];
-void AddEdge(int u,int v,int c) {
+int ecnt;
+void _AddEdge(int u,int v,int f,int c) {
+	e[ecnt].u = u;
 	e[ecnt].v = v;
-	e[ecnt].f = c;
+	e[ecnt].f = f;
+	e[ecnt].c = c;
 	e[ecnt].next = head[u];
 	head[u] = ecnt;
 	ecnt ++;
 }
-int n,m,s,t;
+void AddEdge(int u,int v,int f,int c) {
+	_AddEdge(u,v,f,c);
+	_AddEdge(v,u,0,-c);
+}
+int pre[205];
 int dis[205];
-
-bool bfs() {//划分层次，同时判断是否可到达
-	memset(dis,0x7f,sizeof(dis));
-	dis[s] = 1;
+bool inq[205];
+bool spfa(int s,int t) {
+	memset(dis,0x3f,sizeof(dis));
+	memset(pre,-1,sizeof(pre));
+	memset(inq,false,sizeof(inq));
 	queue <int> q;
 	q.push(s);
-	while(!q.empty()) {
-		int cur = q.front();
+	dis[s] = 0;
+	inq[s] = true;
+	while (!q.empty()) {
+		int u = q.front();
 		q.pop();
-		for (int en=head[cur];en!=-1;en = e[en].next) {
-			int v = e[en].v;
-			if (e[en].f != 0 && dis[v] == INF) {
-				dis[v] = dis[cur] + 1;
-				q.push(v);
+		inq[u] = false;
+		for (int i=head[u];i != -1;i = e[i].next) {
+			if (e[i].f > 0 && dis[u] + e[i].c < dis[e[i].v]) {
+				dis[e[i].v] = dis[u] + e[i].c;
+				pre[e[i].v] = i;
+				if (!inq[e[i].v]) {
+					q.push(e[i].v);
+					inq[e[i].v] = true;
+				}
 			}
 		}
 	}
 	return dis[t] != INF;
 }
-
-int dfs(int u,int curflow) {//curflow=>当前可增广的最大流量
-	if (u == t) return curflow;
-	if (dis[u] >= dis[t]) return 0;
-	for (int en=head[u];en!=-1;en=e[en].next) {
-		int v = e[en].v;
-		int flow;
-		if (e[en].f != 0 && dis[v] == dis[u] + 1 && (flow = dfs(v,min(curflow,e[en].f)))) {
-			e[en].f -= flow;
-			e[en ^ 1].f += flow;//偶数+1,奇数-1，很巧妙的位运算
-			return flow;
+void MCMF(int s,int t,int &f,int &c) {
+	f = 0;
+	c = 0;
+	while (spfa(s,t)) {
+		int curFlow = INF;
+		for (int i=pre[t];i != -1;i = pre[e[i].u]) curFlow = min(curFlow,e[i].f);
+		for (int i=pre[t];i != -1;i = pre[e[i].u]) {
+			e[ i ].f -= curFlow;
+			e[i^1].f += curFlow;
 		}
+		f += curFlow;
+		c += curFlow * dis[t];
 	}
-	return 0;
-}
-int dinic() {
-	int ans = 0;
-	int flow;
-	while(bfs()) while(flow = dfs(s,INF)) ans += flow;
-	return ans;
 }
 int main() {
-	while (scanf("%d%d",&m,&n) == 2) {
-		ecnt = 0;
-		s = 1;
-		t = n;
+	int n,m;
+	while (scanf("%d%d",&n,&m) == 2) {//真的是多组数据
 		memset(head,-1,sizeof(head));
-		for (int i=0;i<m;i++) {
-			int u,v,c;
-			scanf("%d%d%d",&u,&v,&c);
-			AddEdge(u,v,c);
-			AddEdge(v,u,0);
-			//一个邻接表双向存储
+		ecnt = 0;
+		while (n --) {
+			int u,v,f;
+			scanf("%d%d%d",&u,&v,&f);
+			AddEdge(u,v,f,1);
 		}
-		printf("%d\n",dinic());
+		int flow,cost;
+		MCMF(1,m,flow,cost);
+		printf("%d\n",flow);
 	}
 	return 0;
 }
