@@ -1,12 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-struct DATA {
-	int v;
-	int pos;
-	friend bool operator < (const DATA &a,const DATA &b) {
-		return a.v < b.v;
-	}
-}d[5005];
+const int INF = 0x3f3f3f3f;
 int r[5005];
 int tr[5005];
 int n;
@@ -23,28 +17,26 @@ inline void add(int x,int d) {
 }
 int main() {
 	while (scanf("%d",&n) == 1) {
+		if (n == 0) break;
+		for (int i=1;i<=n;i++) {
+			scanf("%d",&r[i]);
+			r[i] ++;
+		}
+		//因为是1~n的排列所以不用做离散化了
+		int ans = INF;
 		memset(tr,0,sizeof(tr));
-		for (int i=1;i<=n;i++) {
-			scanf("%d",&d[i].v);
-			d[i].pos = i;
-		}
-		sort(d+1,d+1+n);
-		int rank = 0;
-		for (int i=1;i<=n;i++) {
-			if (i == 1 || d[i].v != d[i-1].v) rank ++;
-			r[d[i].pos] = rank;
-		}
-		long long cnt = 0;
+		int cur = 0;
 		for (int i=n;i>=1;i--) {
-			cnt += sum(r[i]-1);
+			cur += sum(r[i]-1);
 			add(r[i],1);
 		}
-		long long ans = cnt;
+		ans = min(ans,cur);
 		for (int i=1;i<=n;i++) {
-			cnt = cnt - 2*(r[i]-1) + n - 1;//rank从1开始，所以-1
-			ans = min(ans,cnt);
+			cur -= r[i] - 1;
+			cur += n - r[i];
+			ans = min(cur,ans);
 		}
-		printf("%lld\n",ans);
+		printf("%d\n",ans);
 	}
 	return 0;
 }
