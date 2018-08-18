@@ -10,7 +10,6 @@ int main() {
 	memset(r,-1,sizeof(r));
 	int n,q;
 	scanf("%d%d",&n,&q);
-	bool exist_q = false;//是否存在q
 	for (int i=0;i<n;i++) {
 		scanf("%d",&a[i]);
 		l[a[i]] = min(i,l[a[i]]);
