@@ -24,7 +24,7 @@ int main() {
 	for (int i=0;i<n;i++) res[i] = 1;
 	for (int i=0;i<n;i++) {
 		if (e[i]) {
-			if (st.empty() || (!st.empty() && e[i] > st.top()) ) st.push(e[i]);//要考虑这个区间内覆盖了更小的数的情况
+			if (st.empty() || (!st.empty() && e[i] > st.top()) ) st.push(e[i]);//要考虑这个区间内覆盖了更小的数的情况，参考样例3
 		}
 		if (!st.empty()) res[i] = st.top();
 		if (!st.empty()) if (r[st.top()] == i) st.pop();
