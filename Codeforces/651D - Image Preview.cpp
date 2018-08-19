@@ -4,8 +4,8 @@ char s[500005];
 int sum[500005];
 int n,a,b,t;
 bool judge(int page) {
-	for (int left=1;left<=page;left++) {//左边滑的页数
-		int right = page - left;//右边滑的页数
+	for (int left=1;left<=page;left++) {//左边滑（从左向右）的页数
+		int right = page - left;//右边（从右向左）滑的页数
 		int sumt = sum[left] + (sum[n] - sum[n-right]);
 		int st1 = (left-1) * a * 2 + right * a;//先向右滑动，再向左滑动
 		int st2 = right * a * 2 + (left - 1) * a;//先向左滑动，再向右滑动
