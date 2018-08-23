@@ -3,7 +3,7 @@
 #include <vector>
 #include <iostream>
 using namespace std;
-bool NotPrime[500005];
+bool NotPrime[50005];
 vector <long long> Prime;
 void GetPrime(long long x) {
 	memset(NotPrime,false,sizeof(NotPrime));
@@ -20,8 +20,7 @@ void GetPrime(long long x) {
 }
 long long getphi(long long x) {
 	long long ret = x;
-	/*
-	被注释掉的这段不知道为啥错，感觉和底下那段是等价的
+	
 	for (unsigned long i=0;i<Prime.size() && Prime[i] * Prime[i] <= x;i++) {
 		long long cur = Prime[i];
 		if (x % cur == 0) {
@@ -30,18 +29,7 @@ long long getphi(long long x) {
 			while (x % cur == 0) x /= cur;
 		}
 	}
-	*/
-	// {
-	for (long long i=2;i*i<=x;i++) {
-		if (!NotPrime[i]) {
-			if (x % i == 0) {
-				ret /= i;
-				ret *= (i-1);
-				while (x % i == 0) x /= i;
-			}
-		}
-	}
-	// }
+	
 	if (x > 1) {
 		ret /= x;
 		ret *= (x - 1);
@@ -64,7 +52,7 @@ long long qpow(long long a,long long b,long long mod) {
 }
 char s[1000005];
 int main() {
-	GetPrime(500000);
+	GetPrime(50000);
 	long long a,c;
 	while (cin >> a >> s >> c) {
 		long long phi = getphi(c);
