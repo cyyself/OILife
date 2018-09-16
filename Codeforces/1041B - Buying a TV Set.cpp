@@ -6,10 +6,10 @@ long long gcd(long long a,long long b) {
 }
 int main() {
 	long long a,b,x,y;
-	scanf("%lld%lld%lld%lld",&a,&b,&x,&y);
+	cin >> a >> b >> x >> y;
 	long long div = gcd(x,y);
 	x /= div;
 	y /= div;
-	printf("%lld\n",min(a/x,b/y));
+	cout << min(a/x,b/y) << endl;
 	return 0;
 }
