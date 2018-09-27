@@ -16,8 +16,8 @@ int main() {
 			int mid = i;
 			while (pos[mid+1] <= pos[i] + r) mid ++;
 			int j = mid;
-			while (pos[j] <= pos[mid] + r) j ++;
-			i = j;
+			while (pos[j+1] <= pos[mid] + r) j ++;
+			i = j + 1;
 		}
 		printf("%d\n",ans);
 	}
