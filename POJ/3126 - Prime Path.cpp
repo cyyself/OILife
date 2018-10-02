@@ -44,7 +44,7 @@ int main() {
 			ans ++;
 			dfs(ans,a,b);
 		} while(!findans && ans < 10);
-		if (ans == -1) printf("Impossible\n");
+		if (!findans) printf("Impossible\n");
 		else printf("%d\n",ans);
 	}
 	return 0;
