@@ -12,16 +12,16 @@ int main() {
 		scanf("%d%d%d%d",&o,&l,&r,&c);
 		if (o == 0) {
 			for (int j=l;j<=r;j++) {
-				if (j % bsize == 0 && j + bsize - 1 <= r) {
+				if (j % bsize == 1 && j + bsize - 1 <= r) {
 					//修改一个块
-					b[j/bsize] += c;
+					b[(j-1)/bsize] += c;
 					j += bsize - 1;//因为之后还会j ++，所以要-1
 				}
 				else a[j] += c;
 			}
 		}
 		else {
-			printf("%d\n",a[r] + b[r/bsize]);
+			printf("%d\n",a[r] + b[(r-1)/bsize]);
 		}
 	}
 	return 0;
