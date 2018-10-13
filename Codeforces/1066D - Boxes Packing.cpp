@@ -12,7 +12,7 @@ int main() {
 			rem = k;
 			m --;
 		}
-		if (m <= 0) break;
+		if (m <= 0 || rem < a[i]) break;
 		rem -= a[i];
 		ans ++;
 	}
