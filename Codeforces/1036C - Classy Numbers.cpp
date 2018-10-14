@@ -17,7 +17,6 @@ long long dfs(int dep,int avail,bool uplimited) {
 	return cur;
 }
 long long solve(long long x) {
-	memset(f,0x3f,sizeof(f));
 	int cnt = 0;
 	while (x) {
 		digit[++cnt] = x % 10;
@@ -26,6 +25,7 @@ long long solve(long long x) {
 	return dfs(cnt,3,true);
 }
 int main() {
+	memset(f,0x3f,sizeof(f));
 	int T;
 	scanf("%d",&T);
 	while (T --) {
