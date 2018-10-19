@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-vector <int> g[3];//g[i]存储类型小于等于i-1的加油站位置
+vector <int> g[3];//g[i]存储类型大于等于i+1的加油站位置
 int f[3][200005];//f[i][j]表示使用type>=i+1的油，在第j个加油站(加油站位置与g[i]有关，查找位置需对g[i]进行二分)，一直走到e装不下的油量
 int e,s,n,m;
 int cal(int type,int pos) {
