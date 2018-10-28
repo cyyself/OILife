@@ -29,7 +29,7 @@ long long solve(long long x) {
 	for (int mid=0;mid<len;mid++) {
 		ans += dfs(len-1,mid,0,true);
 	}
-	ans -= len - 1;
+	ans -= len - 1;//0被多计算了cnt-1次
 	return ans;
 }
 int main() {
