@@ -1,46 +1,45 @@
 #include <cstdio>
 #include <cstring>
 #include <algorithm>
-using std::upper_bound;
+using namespace std;
 int g[15];
-int s[405];
-int f[15][405];//ÒÑ¾­ÌáÇ°Ëã³ö²»º¬ÏàÁÚÇé¿öµÄ×´Ì¬Êı 
-inline bool judgex(int s) {//ÊÇ·ñÓĞÏàÁÚµÄ1,true:ÎŞ 
-	if (s & (s << 1)) return false;
-	return true;
+int s[4005];
+int f[15][4005];
+inline bool judge_col(int x) {//åŒä¸€è¡Œä¸èƒ½ç›¸é‚»
+	return x & (x << 1);//å¯ä»¥è¿”å›false,ä¸å¯ä»¥è¿”å›true
 }
-inline bool judgeg(int line,int status) {//ÅĞ¶Ïµ±Ç°×´Ì¬ÊÇ·ñ¿ÉÒÔ·ÅÔÚÕâÒ»ĞĞ£¬true:¿ÉÒÔ 
-	if (g[line] & status) return false;
-	return true;
+inline bool judge_row(int x,int y) {//ç›¸é‚»ä¸¤è¡Œä¸èƒ½æœ‰åŒä¸€åˆ—ï¼Œä»¥åŠä¸€è¡Œä¸­0çš„ä½ç½®ä¸èƒ½æ”¾
+	return (x & y);//å¯ä»¥è¿”å›false,ä¸å¯ä»¥è¿”å›true
 }
 int main() {
-	int n,m;
 	int stot = 0;
-	for (int i=0;i<(1<<12);i++) if (judgex(i)) s[stot++] = i;
+	for (int i=0;i<(1<<12);i++) if (!judge_col(i)) s[stot++] = i;
+	int n,m;
 	while (scanf("%d%d",&n,&m) == 2) {
 		memset(g,0,sizeof(g));
 		memset(f,0,sizeof(f));
-		//memset(s,0,sizeof(s));
-		for (int i=0;i<n;i++) 
+		for (int i=0;i<n;i++)
 			for (int j=0;j<m;j++) {
 				int t;
 				scanf("%d",&t);
-				if (t == 0) g[i] += (1 << j);
+				if (!t) g[i] |= (1 << j);//æŠŠè¾“å…¥ä¸º0çš„ä½ç½®å­˜ä¸º1ï¼Œå½“åšæ˜¯éšœç¢
 			}
-		int scnt = upper_bound(s,s+stot,(1<<m) - 1) - s;
-		for (int i=0;i<scnt;i++) if (judgeg(0,s[i])) f[0][i] = 1;
+		int scnt = upper_bound(s,s+stot,(1<<m)-1) - s;
+		for (int j=0;j<scnt;j++) if (!judge_row(s[j],g[0])) f[0][j] = 1;
 		for (int i=1;i<n;i++) {
 			for (int j=0;j<scnt;j++) {
-				if (!judgeg(i,s[j])) continue;
+				if (judge_row(s[j],g[i])) continue;
 				for (int k=0;k<scnt;k++) {
-					if (!judgeg(i-1,s[k])) continue;
-					if (!(s[j] & s[k])) f[i][j] = (f[i][j] + f[i-1][k]) % 100000000;
+					if (judge_row(s[j],s[k])) continue;
+					f[i][j] += f[i-1][k];
+					f[i][j] %= 100000000;
 				}
 			}
 		}
 		int ans = 0;
-		for (int i=0;i<scnt;i++) {
-			ans = (ans + f[n-1][i] ) % 100000000; 
+		for (int j=0;j<scnt;j++) {
+			ans += f[n-1][j];
+			ans %= 100000000;
 		}
 		printf("%d\n",ans);
 	}
