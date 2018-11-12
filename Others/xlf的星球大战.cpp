@@ -11,17 +11,11 @@ bool cross(Pos a,Pos b) {
 	if ((a.x2 >= b.x1 && a.x2 <= b.x2) || (a.x1 >= b.x1 && a.x1 <= b.x2)) return true;
 	return false;
 }
-void debug() {
-
-}
 long long dfs(int stat) {
 	if (f[stat] != -1) return f[stat];
 	long long cur = 0;
 	for (int i=0;i<n;i++) {
 		if (stat & (1 << i)) {
-			if (stat == 15 && i == 1) {
-				debug();
-			}
 			//看看底下还有没有未消灭的
 			bool exist = false;
 			for (int j=0;j<n;j++) {
