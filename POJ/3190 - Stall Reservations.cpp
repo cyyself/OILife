@@ -1,3 +1,20 @@
+/*
+最开始写的是右端点排序然后队列维护，WA了好久
+给一组这种想法的反例
+Sample Input:
+4
+1   3
+2   5
+6   7
+4   9
+Sample Output:
+2
+1
+2
+2
+1
+最后改成左端点排序+堆维护右端点最小值就行了
+*/
 #include <cstdio>
 #include <algorithm>
 #include <queue>
