@@ -1,3 +1,8 @@
+/*
+TLE了两小时的感慨：
+1. 别用费用流每次看dis[t]，会TLE的
+2. 找最短路上的边跑最大流如果用dinic，记得要写多路增广，不然会TLE的
+*/
 #pragma GCC optimize(2)
 #include <cstdio>
 #include <cstring>
