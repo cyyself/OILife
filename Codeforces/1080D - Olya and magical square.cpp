@@ -29,7 +29,6 @@ int main() {
 			//1,3,7,15,31,...,2**n-1
 			//sigma = 2**(n+1)-2-n
 			int ans = -1;
-			int step = 1;
 			for (long long i=n-1,step=1;i>=0 && ans == -1;i--,step++) {
 				long long lower = pow2(step+1) - 2LL - step;//要切成路径为i的路至少要切的次数
 				//上界=一共可以切的次数-路径上的方块数*该长度的方块可以切的次数
