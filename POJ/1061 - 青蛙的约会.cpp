@@ -17,8 +17,13 @@ int main(){
 	cin >> x >> y >> m >> n >> l;
 	long long i=0,j=0;
 	long long g = gcd(m-n,l,i,j);
-	long long ans = ((i * ((y-x) / g))%l + l)%l;
 	if ((y-x)%g != 0) cout << "Impossible" << endl;
-	else cout << ans << endl;
+	else {
+		i *= (y-x) / g;
+		l /= g;
+		if (l < 0) l = -l;
+		i = (i % l + l) % l;
+		cout << i << endl;
+	}
 	return 0;
 }
