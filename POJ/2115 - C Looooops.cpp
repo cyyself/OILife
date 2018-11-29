@@ -16,12 +16,14 @@ int main() {
 	while (scanf("%lld%lld%lld%lld",&a,&b,&c,&k) == 4) {
 		if (a == 0 && b == 0 && c == 0 && k == 0) break;
 		long long x,y;
-		long long g = exgcd((1LL<<k),c,x,y);
+		long long len = 1LL << k;
+		long long g = exgcd(len,c,x,y);
 		if ((b-a) % g != 0) printf("FOREVER\n");
 		else {
 			y *= (b-a)/g;
-			y %= 1LL << k;
-			y = (y % ((1LL << k) / g) + ((1LL << k) / g)) % ((1LL << k) / g);
+			len /= g;
+			if (len < 0) len = -len;
+			y = (y % len + len) % len;
 			printf("%lld\n",y);
 		}
 	}
