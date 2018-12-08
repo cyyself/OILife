@@ -21,7 +21,6 @@ struct query{
 	}
 }qu[100005];
 int main() {
-	freopen("1.in","r",stdin);
 	int T;
 	scanf("%d",&T);
 	while (T --) {
