@@ -19,7 +19,7 @@ struct query{
 			else return false;
 		}
 	}
-}qu[100005];
+}qu[200005];
 int main() {
 	int T;
 	scanf("%d",&T);
