@@ -1,4 +1,3 @@
-
 #include <bits/stdc++.h>
 using namespace std;
 int deg[1005];
