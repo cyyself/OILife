@@ -31,7 +31,6 @@ int dij(int s,int type,int t) {
 	}
 	return 0x3f3f3f3f;
 }
-set <pair<int,int> > e;
 int main() {
 	int n;
 	scanf("%d",&n);
