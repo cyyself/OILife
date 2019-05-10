@@ -3,7 +3,7 @@ using namespace std;
 struct Node {
 	int lc,rc;
 	int sum;
-}t[10000005];//数组改小了就能过，之前开10000005一直T
+}t[10000005];//数组改小了就能过，之前开80000005一直T
 int ptr;
 void build_tree(int rt,int l,int r) {
 	if (l == r) t[rt].sum = l;
