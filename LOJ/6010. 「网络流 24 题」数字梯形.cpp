@@ -51,8 +51,8 @@ struct Min_Cost_Max_Flow {
 		return res;
 	}
 }MCMF;
-int mt[30][30];
-int num[30][30];
+int mt[50][50];
+int num[50][50];
 int cnt;
 int n,m;
 void work1() {
