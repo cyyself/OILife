@@ -7,10 +7,7 @@ int main() {
 		long long n,m,k;
 		scanf("%lld%lld%lld",&n,&m,&k);
 		long long need = n - k + 1;
-		long long MIN = (m + 1) / need;
-		if ((m + 1) % need) {
-			MIN ++;
-		}
+		long long MIN = (m + 1 + (need - 1) ) / need;//向上取整
 		printf("%lld\n",MIN * (k - 1) + m + 1);
 	}
 	return 0;
