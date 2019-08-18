@@ -1,54 +1,53 @@
 #include <bits/stdc++.h>
 using namespace std;
-int f[500010];
-int s[500010];
-int n,m;
-
-int q[500010];//std::queue不能取第二个元素，我也很无奈啊
-int head,tail;
-
-//f[i]=min(f[i],f[j]+(s[i]-s[j])^2+m)
-/*
-f[j]+(s[i]-s[j])^2+m<=f[k]+(s[i]-s[k])^2+m
-
-(f[j]+s[j]*s[j])-(f[k]+s[k]*s[k])] / 
-2(s[j]-s[k]) 
-<= s[i]
-
-*/
-inline int fun(int i,int j) {
-	return f[j]+(s[i]-s[j])*(s[i]-s[j]) + m;
+long long a[500005];
+long long pre[500005];
+long long f[500005];
+class mydeque: public deque<int> {
+public:
+	int front_second() {
+		int f1 = front();
+		pop_front();
+		int f2 = front();
+		push_front(f1);
+		return f2;
+	}
+	int back_second() {
+		int b1 = back();
+		pop_back();
+		int b2 = back();
+		push_back(b1);
+		return b2;
+	}
+};
+inline long long getfz(int j,int k) {
+	return f[j] + pre[j] * pre[j] - f[k] - pre[k] * pre[k];
 }
-inline int gety(int j,int k) {
-	return f[j]+s[j]*s[j]-(f[k]+s[k]*s[k]);
+inline long long getfm(int j,int k) {
+	return 2LL * (pre[j] - pre[k]);
 }
-inline int getx(int j,int k) {
-	return 2*(s[j]-s[k]);
+bool judge(int i,int j,int k) {
+	return getfz(j,k) <= pre[i] * getfm(j,k);
 }
-
+bool judge2(int i,int j,int k) {
+	return getfz(i,j) * getfm(j,k) >= getfz(j,k) * getfm(i,j);
+}
 int main() {
+	int n,m;
 	while (scanf("%d%d",&n,&m) == 2) {
+		mydeque q;
 		for (int i=1;i<=n;i++) {
-			scanf("%d",&s[i]);
-			s[i] += s[i-1];//前缀和
+			scanf("%lld",&a[i]);
+			pre[i] = pre[i-1] + a[i];
 		}
-		head = 0;
-		tail = 0;
-		q[tail++] = 0;
-		f[0] = 0;
+		q.push_back(0);
 		for (int i=1;i<=n;i++) {
-			while (head + 1 < tail && 
-				gety(q[head+1],q[head]) <= 
-				s[i] * getx(q[head+1],q[head])
-			) head++;
-			f[i] = fun(i,q[head]);
-			while (head + 1 < tail && 
-				gety(i,q[tail-1]) * getx(q[tail-1],q[tail-2]) <= 
-				gety(q[tail-1],q[tail-2]) * getx(i,q[tail-1])
-			) tail--;
-			q[tail++] = i;
+			while (q.size() >= 2 && judge(i,q.front_second(),q.front())) q.pop_front();
+			f[i] = f[q.front()] + (pre[i] - pre[q.front()]) * (pre[i] - pre[q.front()]) + m;
+			while (q.size() >= 2 && judge2(i,q.back_second(),q.back())) q.pop_back();
+			q.push_back(i);
 		}
-		printf("%d\n",f[n]);
+		printf("%lld\n",f[n]);
 	}
 	return 0;
 }
