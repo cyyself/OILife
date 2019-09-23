@@ -23,13 +23,6 @@ bool avail(string &s) {
 	for (auto c:s) if (!is_digit(c)) return false;
 	return true;
 }
-string only_digit(string &s) {
-	string ret = "";
-	for (auto c:s) {
-		if (is_digit(c)) ret += c;
-	}
-	return ret;
-}
 vector <string> s[205];
 char tmp[1005];
 vector <string> out;
@@ -52,7 +45,7 @@ int main() {
 				}
 			}
 			if (avail(s[i][j])) {
-				out.push_back(only_digit(s[i][j]));
+				out.push_back(s[i][j]);
 				cnt[i] ++;
 			}
 		}
