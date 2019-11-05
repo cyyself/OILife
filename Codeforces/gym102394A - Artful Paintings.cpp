@@ -21,27 +21,6 @@ int n;
 bool inq[maxn];
 int dis[maxn];
 int cnt[maxn];
-struct myqueue {
-	int arr[maxn*maxn];
-	int st,ed;
-	inline void init() {
-		st = 0;
-		ed = 0;
-	}
-	inline bool empty() {
-		return st == ed;
-	}
-	inline int front() {
-		return arr[st];
-	}
-	inline void pop() {
-		st ++;
-	}
-	inline void push(int x) {
-		arr[ed] = x;
-		ed ++;
-	}
-}q;
 bool check(int mid) {
 	for (register int i=0;i<=n;i++) {
 		dis[i] = INF;
@@ -49,8 +28,7 @@ bool check(int mid) {
 		inq[i] = false;
 	}
 	dis[0] = 0;
-	//queue <int> q;
-	q.init();
+	queue <int> q;
 	q.push(0);
 	while (!q.empty()) {
 		int u = q.front();
@@ -75,40 +53,11 @@ bool check(int mid) {
 	}
 	return true;
 }
-namespace IO{
-	#define BUF_SIZE 100000
-	#define OUT_SIZE 100000
-	bool IOerror=0;
-	inline char nc(){
-		static char buf[BUF_SIZE],*p1=buf+BUF_SIZE,*pend=buf+BUF_SIZE;
-		if(p1==pend) {
-			p1=buf;pend=buf+fread(buf,1,BUF_SIZE,stdin);
-			if(pend==p1) {IOerror=1;return -1;}
-		}
-		return *p1++;
-	}
-	inline bool blank(char ch) {return ch==' '||ch=='\n'||ch=='\r'||ch=='\t';}
-	template<typename T> 
-	inline bool read(T &x) {
-		bool sign=0;char ch=nc();x=0;
-		for(;blank(ch);ch=nc());
-		if(IOerror) return false;
-		if(ch=='-') sign=1,ch=nc();
-		for(;ch>='0' && ch<='9';ch=nc()) x=x*10+ch-'0';
-		if(sign) x=-x;
-		return true;
-	}
-}
-using namespace IO;
 int main() {
 	int T;
-	//read(T);
 	scanf("%d",&T);
 	while (T --) {
 		int m1,m2;
-		//read(n);
-		//read(m1);
-		//read(m2);
 		scanf("%d%d%d",&n,&m1,&m2);
 		for (int i=0;i<2*n+m1+m2+2;i++) xs[i] = 0;
 		for (int i=0;i<=n+1;i++) head[i] = -1;
@@ -116,18 +65,12 @@ int main() {
 		int _l = 0, _r = n;
 		while (m1 --) {
 			int l,r,k;
-			//read(l);
-			//read(r);
-			//read(k);
 			scanf("%d%d%d",&l,&r,&k);
 			addedge(r,l-1,-k);
 			_l = max(_l,k);
 		}
 		while (m2 --) {
 			int l,r,k;
-			//read(l);
-			//read(r);
-			//read(k);
 			scanf("%d%d%d",&l,&r,&k);
 			xs[ecnt] = 1;
 			addedge(l-1,r,-k);
