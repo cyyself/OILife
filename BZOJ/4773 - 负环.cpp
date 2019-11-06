@@ -5,12 +5,12 @@ struct Matrix {
 	int arr[305][305];
 	Matrix() {
 		memset(arr,0x3f,sizeof(arr));
+		for (int i=0;i<305;i++) arr[i][i] = 0;
 	}
-}p;
+}p[10],s[10];
 int n,m;
 Matrix trans(const Matrix &a,const Matrix &b) {
 	Matrix res;
-	for (int i=1;i<=n;i++) res.arr[i][i] = 0;
 	for (int i=1;i<=n;i++) for (int k=1;k<=n;k++) for (int j=1;j<=n;j++) {
 		res.arr[i][j] = min(res.arr[i][j],a.arr[i][k] + b.arr[k][j]);
 	}
@@ -22,22 +22,27 @@ bool check(const Matrix &a) {
 }
 int main() {
 	scanf("%d%d",&n,&m);
-	for (int i=1;i<=n;i++) p.arr[i][i] = 0;
+	for (int i=1;i<=n;i++) p[0].arr[i][i] = 0;
 	for (int i=0;i<m;i++) {
 		int u,v,w;
 		scanf("%d%d%d",&u,&v,&w);
-		p.arr[u][v] = min(p.arr[u][v],w);
+		p[0].arr[u][v] = min(p[0].arr[u][v],w);
+	}
+	int r = 0;
+	for (int j=1;(1<<j)<=n;j++) {
+		p[j] = trans(p[j-1],p[j-1]);
+		s[j] = trans(s[j-1],p[j-1]);
+		r = j;
 	}
 	int ans = 0;
-	Matrix tmp;
-	for (int i=1;i<=n;i++) tmp.arr[i][i] = 0;
-	for (int i=1;i<=n && !ans;i++) {
-		tmp = trans(tmp,p);
-		if (check(tmp)) {
-			ans = i;
-			break;
+	Matrix pre;
+	for (int j=r;j>=0;j--) {
+		if (!check(trans(pre,s[j]))) {
+			ans |= 1 << j;
+			pre = trans(pre,p[j]);
 		}
 	}
-	printf("%d\n",ans);
+	if (check(pre)) printf("%d\n",ans);
+	else printf("0\n");
 	return 0;
 }
