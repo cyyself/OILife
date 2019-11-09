@@ -1,0 +1,75 @@
+#include <cstdio>
+#include <cstring>
+#include <algorithm>
+using namespace std;
+const int maxn = 1005;
+const int maxm = 2005;
+struct DATA {
+	int v,next;
+}e[maxm];
+int ecnt;
+int head[maxn];
+void addedge(int u,int v) {
+	e[ecnt].v = v;
+	e[ecnt].next = head[u];
+	head[u] = ecnt;
+	ecnt ++;
+}
+int dfn[maxn],low[maxn];
+int ts;
+bool br[maxm];
+void tarjan(int u,int r) {
+	dfn[u] = low[u] = ++ts;
+	for (int i=head[u];~i;i=e[i].next) {
+		int v = e[i].v;
+		if (v == r) continue;
+		if (!dfn[v]) {
+			tarjan(v,u);
+			if (low[v] > dfn[u]) {
+				br[ i ] = true;
+				br[i^1] = true;
+			}
+			low[u] = min(low[u],low[v]);
+		}
+		else low[u] = min(low[u],dfn[v]);
+	}
+}
+int rt[maxn],subg;
+int deg[maxn];
+void dfs(int u) {
+	rt[u] = subg;
+	for (int i=head[u];~i;i=e[i].next) {
+		if (br[i]) continue;
+		int v = e[i].v;
+		if (!rt[v]) dfs(v);
+	}
+}
+int main() {
+	memset(head,-1,sizeof(head));
+	int f,r;
+	scanf("%d%d",&f,&r);
+	for (int i=0;i<r;i++) {
+		int u,v;
+		scanf("%d%d",&u,&v);
+		addedge(u,v);
+		addedge(v,u);
+	}
+	for (int i=1;i<=f;i++) if (!dfn[i]) tarjan(i,i);
+	for (int i=1;i<=f;i++) if (!rt[i]) {
+		subg ++;
+		dfs(i);
+	}
+	for (int u=1;u<=f;u++) {
+		for (int i=head[u];~i;i=e[i].next) {
+			int v = e[i].v;
+			if (rt[u] != rt[v]) {
+				deg[rt[u]] ++;
+				deg[rt[v]] ++;
+			}
+		}
+	}
+	int cnt = 0;
+	for (int i=1;i<=subg;i++) if (deg[i] == 2) cnt ++;
+	printf("%d\n",(cnt+1)/2);
+	return 0;
+}
