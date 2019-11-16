@@ -14,8 +14,10 @@ int main() {
 	for (int i=0;i<m;i++) {
 		int u,v;
 		scanf("%d%d",&u,&v);
+		u = find(u);
+		v = find(v);
 		if (u > v) swap(u,v);
-		f[find(u)] = find(v);
+		f[u] = v;
 	}
 	int i = 1;
 	int ans = 0;
