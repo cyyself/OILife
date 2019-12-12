@@ -1,0 +1,89 @@
+#include <bits/stdc++.h>
+using namespace std;
+const int inf = 0x3f3f3f3f;
+char a[205],b[205];
+int n,m;
+int f[205][205][405];//f[i][j][k]表示两个串匹配到i、j位置，栈深度为k的最小花费
+tuple<int,int,int> pre[205][205][405];
+void trans(int i,int j,int k,int _i,int _j,int _k,int d) {
+	if (i >= 0 && j >= 0 && k >= 0 && _i >= 0 && _j >= 0 && _k >= 0)
+		if (f[_i][_j][_k] + d < f[i][j][k]) {
+			f[i][j][k] = f[_i][_j][_k] + d;
+			pre[i][j][k] = {_i,_j,_k};
+		}
+}
+int main() {
+	memset(f,0x3f,sizeof(f));
+	memset(pre,-1,sizeof(pre));
+	scanf("%s%s",a+1,b+1);
+	n = strlen(a+1);
+	m = strlen(b+1);
+	for (int i=0;i<=n;i++) for (int j=0;j<=m;j++) for (int k=0;k<=400;k++) {
+		if (i == 0 && j == 0) {
+			f[i][j][k] = k;
+			continue;
+		}
+		if (a[i] == b[j] && i && j) {
+			if (a[i] == '(') {
+				trans(i,j,k,i-1,j-1,k-1,1);
+				//if (k) f[i][j][k] = min(f[i][j][k],f[i-1][j-1][k-1]+1);
+			}
+			else {
+				//f[i][j][k] = min(f[i][j][k],f[i-1][j-1][k+1]+1);
+				trans(i,j,k,i-1,j-1,k+1,+1);
+			}
+		}
+		if (i) {
+			if (a[i] == '(') {
+				trans(i,j,k,i-1,j,k-1,1);
+				//if (k) f[i][j][k] = min(f[i][j][k],f[i-1][j][k-1] + 1);
+			}
+			else {
+				trans(i,j,k,i-1,j,k+1,1);
+				//f[i][j][k] =  min(f[i][j][k],f[i-1][j][k+1] + 1);
+			}
+		}
+		if (j) {
+			if (b[j] == '(' && j) {
+				trans(i,j,k,i,j-1,k-1,1);
+				//if (k) f[i][j][k] = min(f[i][j][k],f[i][j-1][k-1] + 1);
+			}
+			else {
+				trans(i,j,k,i,j-1,k+1,1);
+				//f[i][j][k] =  min(f[i][j][k],f[i][j-1][k+1] + 1);
+			}
+		}
+		trans(i,j,k,i,j,k-1,1);
+		//if (k) f[i][j][k] = min(f[i][j][k],f[i][j][k-1]+1);
+	}
+	int ans = f[n][m][0],sel = 0;
+	for (int k=1;k<=400;k++) {
+		if (f[n][m][k] + k < ans) {
+			ans = f[n][m][k] + k;
+			sel = k;
+		}
+	}
+	static char buf[1005];
+	int bs = 0;
+	for (int i=0;i<sel;i++) buf[bs++] = ')';
+	int i = n,j = m,k = sel;
+	tuple <int,int,int> invalid;
+	memset(&invalid,-1,sizeof(invalid));
+	while (pre[i][j][k] != invalid) {
+		int _i,_j,_k;
+		tie(_i,_j,_k) = pre[i][j][k];
+		if (_k + 1 == k) buf[bs++] = '(';
+		else buf[bs++] = ')';
+		i = _i;
+		j = _j;
+		k = _k;
+	}
+	while (k) {
+		buf[bs++] = '(';
+		k --;
+	}
+	buf[bs] = 0;
+	reverse(buf,buf+bs);
+	printf("%s\n",buf);
+	return 0;
+}
