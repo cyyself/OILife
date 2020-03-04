@@ -14,6 +14,7 @@ int ask(int u,int v) {
 	scanf("%d",&res);
 	if (res != u) vis_down[u] = true;
 	if (res != v) vis_down[v] = true;
+	vis[res] = true;
 	return res;
 }
 int main() {
@@ -34,7 +35,6 @@ int main() {
 	int v = q.front();
 	q.pop();
 	int lca = ask(u,v);
-	vis[lca] = true;
 	while (!q.empty()) {
 		while (!q.empty() && vis[q.front()]) q.pop();
 		if (q.empty()) break;
@@ -54,11 +54,9 @@ int main() {
 			vis[n_lca] = true;
 			if (cnt == n / 2) break;
 			if (!vis_down[n_lca] && lca != n_lca) lca = ask(lca,n_lca);
-			vis[lca] = true;
 		}
 		else {
 			lca = ask(u,lca);
-			vis[lca] = true;
 		}
 		if (cnt == n / 2) break;
 	}
