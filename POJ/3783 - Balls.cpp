@@ -7,7 +7,7 @@ long long cal(int b,int c) {//b个球，扔c次，可以达到的最大区间
 	if (b == 1) return c + 1;
 	if (c == 0) return 1;
 	if (~f[b][c]) return f[b][c];
-	f[b][c] = 0;
+	f[b][c] = 1;
 	for (int i=1;i<=c;i++) f[b][c] += cal(b-1,c-i);
 	f[b][c] = max(f[b][c],1ll<<min(b,c));
 	return f[b][c];
