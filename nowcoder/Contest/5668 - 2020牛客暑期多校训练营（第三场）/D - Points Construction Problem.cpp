@@ -42,16 +42,10 @@ int main() {
 	while (T --) {
 		int n,m;
 		scanf("%d%d",&n,&m);
-		bool ans = false;
-		for (int e=0;e<=n && !ans;e++) if (m - 4*e >= 0 && vis[n-e][m-4*e]) {
-			ans = true;
+		if (vis[n][m]) {
 			printf("Yes\n");
 			int sx = 0, sy = 0;
-			for (int i=0;i<e;i++) {
-				//printf("%d %d\n",sx,sy);
-				sx += 100;
-			}
-			int curn = n-e, curm = m-4*e;
+			int curn = n, curm = m;
 			while (pre[curn][curm] != make_pair(make_pair(0,0),0)) {
 				for (int i=0;i<pre[curn][curm].first.first;i++) 
 					for (int j=0;j<pre[curn][curm].first.second;j++) printf("%d %d\n",sx+i,sy+j);
@@ -64,7 +58,7 @@ int main() {
 				sx += 100;
 			}
 		}
-		if (!ans) printf("No\n");
+		else printf("No\n");
 	}
 	return 0;
 }
